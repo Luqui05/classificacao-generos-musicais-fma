@@ -1,0 +1,11 @@
+﻿model_a,model_b,wilcoxon_statistic,p_value_raw,mean_difference_a_minus_b,median_difference_a_minus_b,wins_model_a,wins_model_b,ties,better_model_by_mean,p_value_holm,reject_h0_holm,decision_holm
+Decision Tree,Naive Bayes,0.0000000000,0.0019531250,0.1150626840,0.1239732454,10,0,0,Decision Tree,0.0195312500,True,Diferença significativa
+KNN,Decision Tree,0.0000000000,0.0019531250,0.1050173103,0.1068048443,10,0,0,KNN,0.0195312500,True,Diferença significativa
+KNN,Naive Bayes,0.0000000000,0.0019531250,0.2200799943,0.2247008664,10,0,0,KNN,0.0195312500,True,Diferença significativa
+Perceptron,Decision Tree,0.0000000000,0.0019531250,0.1106811139,0.1090548013,10,0,0,Perceptron,0.0195312500,True,Diferença significativa
+Perceptron,Naive Bayes,0.0000000000,0.0019531250,0.2257437979,0.2292157904,10,0,0,Perceptron,0.0195312500,True,Diferença significativa
+SVM,Decision Tree,0.0000000000,0.0019531250,0.2469582589,0.2430670981,10,0,0,SVM,0.0195312500,True,Diferença significativa
+SVM,KNN,0.0000000000,0.0019531250,0.1419409486,0.1396228008,10,0,0,SVM,0.0195312500,True,Diferença significativa
+SVM,Naive Bayes,0.0000000000,0.0019531250,0.3620209429,0.3612631510,10,0,0,SVM,0.0195312500,True,Diferença significativa
+SVM,Perceptron,0.0000000000,0.0019531250,0.1362771450,0.1347015109,10,0,0,SVM,0.0195312500,True,Diferença significativa
+Perceptron,KNN,19.0000000000,0.4316406250,0.0056638036,0.0017877486,6,4,0,Perceptron,0.4316406250,False,Diferença não significativa

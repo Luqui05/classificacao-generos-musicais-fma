@@ -1,0 +1,39 @@
+RELATÓRIO DE ANÁLISE ESTATÍSTICA
+========================================
+
+Métrica principal: f1_macro
+Nível de significância: 0.05
+Quantidade de folds: 10
+Quantidade de classificadores: 5
+
+TESTE DE FRIEDMAN
+----------------------------------------
+Estatística: 38.0800000000
+p-valor: 1.078774772e-07
+Decisão: Rejeitar H0
+Interpretação: Há evidência de diferença estatisticamente significativa entre pelo menos dois classificadores.
+
+RANKS MÉDIOS
+----------------------------------------
+SVM: rank médio=1.0000, F1 médio=0.6129
+Perceptron: rank médio=2.4000, F1 médio=0.4766
+KNN: rank médio=2.6000, F1 médio=0.4710
+Decision Tree: rank médio=4.0000, F1 médio=0.3660
+Naive Bayes: rank médio=5.0000, F1 médio=0.2509
+
+PÓS-HOC: WILCOXON COM CORREÇÃO DE HOLM
+----------------------------------------
+Decision Tree x Naive Bayes: p bruto=0.001953125, p Holm=0.01953125, Diferença significativa
+KNN x Decision Tree: p bruto=0.001953125, p Holm=0.01953125, Diferença significativa
+KNN x Naive Bayes: p bruto=0.001953125, p Holm=0.01953125, Diferença significativa
+Perceptron x Decision Tree: p bruto=0.001953125, p Holm=0.01953125, Diferença significativa
+Perceptron x Naive Bayes: p bruto=0.001953125, p Holm=0.01953125, Diferença significativa
+SVM x Decision Tree: p bruto=0.001953125, p Holm=0.01953125, Diferença significativa
+SVM x KNN: p bruto=0.001953125, p Holm=0.01953125, Diferença significativa
+SVM x Naive Bayes: p bruto=0.001953125, p Holm=0.01953125, Diferença significativa
+SVM x Perceptron: p bruto=0.001953125, p Holm=0.01953125, Diferença significativa
+Perceptron x KNN: p bruto=0.431640625, p Holm=0.431640625, Diferença não significativa
+
+RESSALVA METODOLÓGICA
+----------------------------------------
+Os resultados estatísticos devem ser interpretados no contexto da FMA Small e do protocolo experimental adotado. Os folds de uma validação cruzada não equivalem a conjuntos de dados totalmente independentes.

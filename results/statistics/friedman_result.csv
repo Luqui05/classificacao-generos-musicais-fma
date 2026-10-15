@@ -1,0 +1,2 @@
+﻿test,metric,number_of_models,number_of_folds,statistic,p_value,alpha,reject_h0,decision,interpretation
+Friedman,f1_macro,5,10,38.0800000000,0.0000001079,0.0500000000,True,Rejeitar H0,Há evidência de diferença estatisticamente significativa entre pelo menos dois classificadores.
