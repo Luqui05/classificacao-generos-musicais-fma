@@ -53,6 +53,10 @@ Os oito gêneros são Electronic, Experimental, Folk, Hip-Hop, Instrumental, Int
 
 Os áudios não são necessários: o projeto utiliza atributos já extraídos. Não é necessário instalar Librosa para executar este experimento, nem baixar `fma_small.zip`.
 
+A extensão opcional de extração de áudio está documentada em
+[`audio_features.md`](audio_features.md), com instalação em ambiente separado e
+testes do extrator. A equivalência numérica com a FMA ainda precisa ser validada.
+
 Prefira instalar **`requirements-lock.txt`** para utilizar as versões registradas. O arquivo `requirements.txt` permite instalar as dependências diretas, mas pode selecionar versões diferentes. Versões de Python e bibliotecas devem ser registradas ao reproduzir os resultados.
 
 ## 1. Obter o projeto

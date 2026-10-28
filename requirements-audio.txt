@@ -1,0 +1,4 @@
+# Extensão opcional: instalar em ambiente separado após requirements-lock.txt.
+# Impede que a instalação de áudio atualize as dependências do experimento.
+-c requirements-lock.txt
+librosa==0.11.0
