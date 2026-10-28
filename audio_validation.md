@@ -4,9 +4,10 @@ O comando `compare_audio_features.py` compara o extrator atual com as linhas
 do arquivo oficial `data/fma_metadata/features.csv`. Os modelos e os resultados
 da validação cruzada não participam dessa etapa.
 
-**Estado atual:** amostra preparada e comparador testado com valores controlados.
-A comparação de áudio real aguarda os MP3s abaixo. Ainda não foi estabelecida
-equivalência numérica entre o extrator e a FMA.
+**Estado atual:** comparação com áudio real executada em 28/10/2026, nas 16
+faixas selecionadas. Todas apresentaram divergências com as tolerâncias
+diagnósticas atuais; a compatibilidade numérica continua não validada.
+Consulte o [andamento e a análise da execução](validation/audio_features/STATUS.md).
 
 ## MP3s necessários
 

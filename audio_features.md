@@ -6,9 +6,11 @@ colunas correspondem aos atributos de `data/fma_small_features.csv`, sem
 `track_id` nem `genre`. O nome da Series é o nome do arquivo sem a extensão.
 
 **Estado da validação:** o esquema e o contrato do extrator têm testes
-automatizados. A equivalência numérica com os valores publicados pela FMA
-ainda não foi validada com áudios oficiais. Não há treinamento nem pipeline
-de inferência implementados nesta extensão.
+automatizados. A comparação real nas 16 faixas selecionadas apresentou
+divergências; a equivalência numérica com os valores publicados pela FMA
+continua não validada. O acompanhamento está em
+[STATUS.md](validation/audio_features/STATUS.md). Não há treinamento nem
+pipeline de inferência implementados nesta extensão.
 
 ## Instalação opcional e isolada
 
@@ -78,9 +80,9 @@ isso exige comparação com os valores publicados, mesmo que pareça uma correç
 O comparador e a lista de MP3s necessários estão em
 [audio_validation.md](audio_validation.md). Ele compara os 518 valores de MP3s
 oficiais, identificados por `track_id`, com as respectivas linhas do CSV e
-resume diferenças por família e estatística. A execução com áudio real ainda
-está pendente. Correspondência de colunas e testes com mocks não substituem
-essa comparação.
+resume diferenças por família e estatística. A primeira execução com áudio
+real está analisada no acompanhamento acima. Correspondência de colunas e
+testes com mocks não substituem essa comparação.
 
 ## Testes automatizados
 
