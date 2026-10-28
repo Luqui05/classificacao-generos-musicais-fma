@@ -75,10 +75,12 @@ numérica. Consulte o [histórico do Librosa](https://librosa.org/doc/0.11.0/cha
 Algumas chamadas espectrais omitem `sr`, como no script oficial; alterar
 isso exige comparação com os valores publicados, mesmo que pareça uma correção.
 
-A validação futura deve comparar os 518 valores de MP3s oficiais, identificados
-por `track_id`, com as respectivas linhas do CSV e investigar diferenças por
-família de atributos. Correspondência de colunas e testes com mocks não
-substituem essa comparação.
+O comparador e a lista de MP3s necessários estão em
+[audio_validation.md](audio_validation.md). Ele compara os 518 valores de MP3s
+oficiais, identificados por `track_id`, com as respectivas linhas do CSV e
+resume diferenças por família e estatística. A execução com áudio real ainda
+está pendente. Correspondência de colunas e testes com mocks não substituem
+essa comparação.
 
 ## Testes automatizados
 

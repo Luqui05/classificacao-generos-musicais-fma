@@ -1,0 +1,22 @@
+{
+  "created_utc": "2026-10-28T18:26:39.295221+00:00",
+  "selection": "sorted genres and track_ids; numpy.default_rng.choice without replacement",
+  "seed": 42,
+  "per_genre": 2,
+  "excluded_short_track_ids": [
+    98565,
+    98567,
+    98569,
+    99134,
+    108925,
+    133297
+  ],
+  "redundancies_removed": 16,
+  "dataset_sha256": "cc5ae976f8214967747c1260bf9412e6d7900f9eea08102e6fd9423e83b4122d",
+  "official_features_sha256": "a035d04941e15fc3240aadd6880c519471d218329bbfe0e82c17553ba50e9e16",
+  "numpy_version": "2.4.6",
+  "reference_source": "https://github.com/mdeff/fma#data",
+  "audio_source_required": "unmodified MP3 excerpts from fma_small.zip (rc1)",
+  "status": "awaiting_official_audio; numerical_equivalence_not_established",
+  "manifest_sha256": "9d7813f887b015a7d4f62d71bb1aece033e1787b37a78d26b97c7ec32ca11f48"
+}
