@@ -100,9 +100,9 @@ permanece sem alterações.
 
 ## Próximo trabalho: ampliar a validação
 
-1. Repetição concluída em 006406 (Folk): 461/518 no perfil histórico,
-   com 57 divergências em chroma CQT, CENS e tonnetz. Investigar essas
-   diferenças antes de incorporar o perfil ao extrator. Ver [relatório](FULL_006406.md).
+1. Investigação de 006406 concluída: a transcrição do interpolador resampy
+   0.1.5 elevou o resultado de 461/518 a 518/518; regressão em 030520 também
+   obteve 518/518. Ver [evidências e limites](RESAMPY_015.md).
 2. Ampliar a amostra de faixas completas, abrangendo os demais gêneros, e
    registrar os atributos que eventualmente não passarem nas tolerâncias atuais.
 3. Depois dessa confirmação, definir como incorporar a compatibilidade histórica
