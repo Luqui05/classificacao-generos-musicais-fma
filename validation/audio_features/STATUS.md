@@ -120,3 +120,12 @@ Fontes para investigação:
 [normalização de RMS no Librosa](https://librosa.org/doc/0.11.0/changelog.html#v0-7-1),
 [padding no Librosa](https://librosa.org/doc/0.11.0/changelog.html#v0-9-0),
 [extrator oficial da FMA](https://github.com/mdeff/fma/blob/master/features.py).
+# Atualização: integração histórica
+
+O extrator principal oferece o perfil explícito `fma-2017`, com recursos
+históricos versionados e FFmpeg informado pelo chamador. A suíte com regressões
+de áudio habilitadas passou: **53 testes**, incluindo comparação dos 518
+atributos de cada uma das faixas completas 030520 e 006406 com as referências
+oficiais, nas tolerâncias originais. O perfil padrão moderno foi preservado.
+Ver [integração e comandos](INTEGRATION.md). As seções abaixo preservam o
+histórico das etapas anteriores. Treinamento e inferência permanecem pendentes.

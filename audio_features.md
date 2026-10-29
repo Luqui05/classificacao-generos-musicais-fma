@@ -112,3 +112,9 @@ Cobertura de comportamento:
 Os mocks verificam a integração entre chamadas e a montagem da saída. Não
 testam os algoritmos internos do Librosa, a decodificação MP3 ou a equivalência
 numérica com a FMA. Os testes não escrevem em `data/` nem em `results/`.
+# Perfil histórico integrado
+
+Para reproduzir o perfil validado nas faixas completas 030520 e 006406,
+use `extract_features(path, profile='fma-2017', ffmpeg_path=...)`.
+O comportamento anterior continua disponível e é o padrão `current`.
+Consulte [contrato e regressões](validation/audio_features/INTEGRATION.md).

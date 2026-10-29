@@ -3,7 +3,8 @@
 Os cálculos deste módulo seguem o features.py do repositório oficial
 do Free Music Archive. A saída é uma Series float32 cujos nomes de coluna
 planos e cuja ordem correspondem a fma_small_features.csv. A equivalência
-numérica com os valores publicados ainda requer validação com áudios oficiais.
+numérica depende do perfil. O perfil fma-2017 foi validado em duas faixas
+completas oficiais; isso não estabelece equivalência para toda a base.
 """
 
 from __future__ import annotations
@@ -101,7 +102,8 @@ def _feature_statistics(values: np.ndarray) -> dict[str, np.ndarray]:
     }
 
 
-def extract_features(audio_path: str | Path) -> pd.Series:
+def extract_features(audio_path: str | Path, *, profile: str = 'current',
+                     ffmpeg_path: str | Path | None = None) -> pd.Series:
     """Extrai as 518 estatísticas do FMA a partir de um arquivo de áudio (incluindo MP3).
 
     O carregamento preserva a taxa de amostragem nativa do arquivo e converte para mono,
@@ -109,12 +111,21 @@ def extract_features(audio_path: str | Path) -> pd.Series:
     demanda (lazy import) para que o restante do experimento do TCC possa continuar
     executando sem dependências de áudio.
 
+    profile='current' preserva o comportamento moderno anterior.
+    profile='fma-2017' reproduz o perfil histórico validado e exige ffmpeg_path
+    explícito, apontando para um executável FFmpeg com o decoder mp3. Processa
+    o MP3 inteiro; não recorta nem normaliza sua amplitude. Consulte
+    validation/audio_features/INTEGRATION.md para versões e limites.
+
     Raises:
         FileNotFoundError: se audio_path não apontar para um arquivo.
         RuntimeError: se a librosa não estiver instalada.
         ValueError: se o arquivo estiver vazio/inválido, os cálculos falharem ou
             qualquer estatística resultante for não finita.
     """
+    if profile not in ('current', 'fma-2017'):
+        raise ValueError(f'Perfil desconhecido: {profile}')
+    historical = profile == 'fma-2017'
     path = Path(audio_path)
     if not path.is_file():
         raise FileNotFoundError(f"Arquivo de áudio não encontrado: {path}")
@@ -140,7 +151,15 @@ def extract_features(audio_path: str | Path) -> pd.Series:
         computed[name] = _feature_statistics(array)
 
     try:
-        y, sample_rate = librosa.load(path, sr=None, mono=True)
+        if historical:
+            from ._fma_decode import decode
+            from ._fma_legacy import load_legacy_cqt
+            resources = Path(__file__).parent / 'fma_2017'
+            y, sample_rate = decode(path, ffmpeg_path)
+            cqt_function = load_legacy_cqt(resources, resources)
+        else:
+            y, sample_rate = librosa.load(path, sr=None, mono=True)
+            cqt_function = librosa.cqt
         if y.size == 0:
             raise ValueError("O arquivo de áudio não contém amostras.")
 
@@ -150,7 +169,7 @@ def extract_features(audio_path: str | Path) -> pd.Series:
         )
 
         cqt = np.abs(
-            librosa.cqt(
+            cqt_function(
                 y,
                 sr=sample_rate,
                 hop_length=512,
@@ -165,26 +184,32 @@ def extract_features(audio_path: str | Path) -> pd.Series:
         if not expected_frames <= cqt.shape[1] <= expected_frames + 1:
             raise ValueError(f"Quantidade inesperada de quadros CQT: {cqt.shape[1]}.")
 
-        chroma_cqt = librosa.feature.chroma_cqt(C=cqt, n_chroma=12, n_octaves=7)
+        chroma_options = {'bins_per_octave': 12} if historical else {}
+        chroma_cqt = librosa.feature.chroma_cqt(C=cqt, n_chroma=12, n_octaves=7, **chroma_options)
         record("chroma_cqt", chroma_cqt)
-        chroma_cens = librosa.feature.chroma_cens(C=cqt, n_chroma=12, n_octaves=7)
+        cens_options = dict(chroma_options)
+        if historical:
+            cens_options['smoothing_window'] = lambda n: librosa.filters.get_window('hann', n, fftbins=True)
+        chroma_cens = librosa.feature.chroma_cens(C=cqt, n_chroma=12, n_octaves=7, **cens_options)
         record("chroma_cens", chroma_cens)
         record("tonnetz", librosa.feature.tonnetz(chroma=chroma_cens))
 
         del cqt
-        stft = np.abs(librosa.stft(y, n_fft=2048, hop_length=512))
+        stft_options = {'pad_mode': 'reflect'} if historical else {}
+        stft = np.abs(librosa.stft(y, n_fft=2048, hop_length=512, **stft_options))
         if stft.shape[0] != 1 + 2048 // 2:
             raise ValueError(f"STFT inesperada: {stft.shape[0]} bandas, esperadas 1025.")
         if not expected_frames <= stft.shape[1] <= expected_frames + 1:
             raise ValueError(f"Quantidade inesperada de quadros STFT: {stft.shape[1]}.")
         del y
 
-        record("chroma_stft", librosa.feature.chroma_stft(S=stft**2, n_chroma=12))
+        chroma_stft_options = {'dtype': np.float64} if historical else {}
+        record("chroma_stft", librosa.feature.chroma_stft(S=stft**2, n_chroma=12, **chroma_stft_options))
 
         # Adapta o nome da API mantendo a magnitude da STFT como entrada.
         # A equivalência numérica entre versões de rmse/rms precisa ser validada.
         rms = getattr(librosa.feature, "rmse", None) or librosa.feature.rms
-        record("rmse", rms(S=stft))
+        record("rmse", np.sqrt(np.mean(stft**2, axis=0, keepdims=True)) if historical else rms(S=stft))
         record("spectral_centroid", librosa.feature.spectral_centroid(S=stft))
         record("spectral_bandwidth", librosa.feature.spectral_bandwidth(S=stft))
         record("spectral_contrast", librosa.feature.spectral_contrast(S=stft, n_bands=6))
