@@ -100,7 +100,9 @@ permanece sem alterações.
 
 ## Próximo trabalho: ampliar a validação
 
-1. Repetir o perfil em uma segunda faixa completa oficial.
+1. Repetição concluída em 006406 (Folk): 461/518 no perfil histórico,
+   com 57 divergências em chroma CQT, CENS e tonnetz. Investigar essas
+   diferenças antes de incorporar o perfil ao extrator. Ver [relatório](FULL_006406.md).
 2. Ampliar a amostra de faixas completas, abrangendo os demais gêneros, e
    registrar os atributos que eventualmente não passarem nas tolerâncias atuais.
 3. Depois dessa confirmação, definir como incorporar a compatibilidade histórica
