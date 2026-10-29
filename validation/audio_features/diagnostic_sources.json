@@ -1,0 +1,58 @@
+{
+  "purpose": "Fontes e ferramentas opcionais do diagnóstico da faixa completa 030520; não alteram os ambientes ou locks do experimento.",
+  "tools": [
+    {
+      "directory": "validation/audio_features/runs/tools/imageio_ffmpeg_0_6_0",
+      "source": {
+        "url": "https://files.pythonhosted.org/packages/2c/c6/fa760e12a2483469e2bf5058c5faff664acf66cadb4df2ad6205b016a73d/imageio_ffmpeg-0.6.0-py3-none-win_amd64.whl",
+        "wheel_sha256": "02fa47c83703c37df6bfe4896aab339013f62bf02c5ebf2dce6da56af04ffc0a",
+        "package": "imageio-ffmpeg==0.6.0"
+      },
+      "files_sha256": {
+        "ffmpeg-win-x86_64-v7.1.exe": "2ce797a0f88d7f067180338fb227f7b1928ea727bd9a4d7a1d022f7c52af71a3"
+      }
+    },
+    {
+      "directory": "validation/audio_features/runs/tools/resampy_0_4_3",
+      "source": {
+        "package": "resampy==0.4.3",
+        "url": "https://files.pythonhosted.org/packages/4d/b9/3b00ac340a1aab3389ebcc52c779914a44aadf7b0cb7a3bf053195735607/resampy-0.4.3-py3-none-any.whl",
+        "sha256": "ad2ed64516b140a122d96704e32bc0f92b23f45419e8b8f478e5a05f83edcebd"
+      },
+      "files_sha256": {
+        "resampy/core.py": "37ee3601e0bca43e24c67ea840365001f464bee554b5480aa096e98aa147a479",
+        "resampy/data/kaiser_best.npz": "344c4eb7d35ef9845192a506aaa5836ca243033a90e6363a9d25fc5cd12a5328",
+        "resampy/data/kaiser_fast.npz": "8289150d2cd8f5cae2b60af483fcce0b9dd8a740c6294277f569317573e0a095",
+        "resampy/filters.py": "31871f3246bdd78adba1d087da4472869b2b6442ae969204f1a1c963a73090ae",
+        "resampy/interpn.py": "50ce892d76ca103fc072f252e50a84d6d78da38f513135fdaf9d712c2647e247",
+        "resampy/version.py": "fe614a7caecc39917621a62b6c40422f7510d76e7bbaa6996ecb9baca6383dd2",
+        "resampy/__init__.py": "f65e7016ed411b1d8568ea983a268eed36862d15cd12e261583f451522f43774",
+        "resampy-0.4.3.dist-info/METADATA": "ff3e4ce6f2d5b8151c1236fbb664b4171ce6f485602a7aa92e59d657b62e2f85"
+      }
+    },
+    {
+      "directory": "validation/audio_features/runs/tools/librosa_0_5_0",
+      "source": {
+        "package": "librosa==0.5.0",
+        "url": "https://files.pythonhosted.org/packages/79/1a/d8ff585588945fb4e86bf861c0b7b8b13954e40de442bf342cfe950bdcc0/librosa-0.5.0.tar.gz",
+        "sha256": "72f67e5cbc3d3e6fe27a71b02ff81df15a610a91cd81380f69a03037981e253e"
+      },
+      "files_sha256": {
+        "constantq.py": "42b903fc420a6278252472f39a558f02dbd2de2ab139d384a5987e9a973ec2fb",
+        "filters.py": "776c50892649b06fadda7093df45e1e8e0a4b87cd31f74a761bebb4c1bc5d79d"
+      }
+    },
+    {
+      "directory": "validation/audio_features/runs/tools/resampy_0_1_5",
+      "source": {
+        "package": "resampy==0.1.5",
+        "url": "https://files.pythonhosted.org/packages/e4/6b/7fd07323225d38f4ce056e3f49fbd92ca36c7f1e82f1285cb2fc9b951dde/resampy-0.1.5.tar.gz",
+        "sha256": "64549b86349bf3eff56143dc0f661be4905c4baf61ce38cd30d0e7e46142b462"
+      },
+      "files_sha256": {
+        "kaiser_best.npz": "67fab90360555b1704a6e84f75335eb306b166617f5b4de45a28ea225e69b0bb",
+        "kaiser_fast.npz": "97b22e148c3cecabfe99446589b8ab5f2e8e5646a9625451b834fa58b081d8cd"
+      }
+    }
+  ]
+}
