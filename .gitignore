@@ -9,3 +9,4 @@ __pycache__/
 data/fma_metadata/
 data/fma_small/
 validation/audio_features/runs/
+artifacts/final_models/

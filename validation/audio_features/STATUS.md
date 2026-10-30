@@ -129,3 +129,10 @@ atributos de cada uma das faixas completas 030520 e 006406 com as referências
 oficiais, nas tolerâncias originais. O perfil padrão moderno foi preservado.
 Ver [integração e comandos](INTEGRATION.md). As seções abaixo preservam o
 histórico das etapas anteriores. Treinamento e inferência permanecem pendentes.
+# Etapa 3: pipelines finais salvos
+
+Treinamento final concluído nos 7.984 registros oficiais deduplicados,
+reutilizando os cinco pipelines existentes. Artefatos completos em
+`artifacts/final_models/20261029T190158629599Z/`. O manifesto registra os
+parâmetros, ambiente, hashes e verificação de serialização. Ver
+[treinamento final](../../final_training.md). Inferência permanece pendente.
