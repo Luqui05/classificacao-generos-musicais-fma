@@ -32,6 +32,7 @@ Os oito gêneros são Electronic, Experimental, Folk, Hip-Hop, Instrumental, Int
 | `scripts/experiment/run_visualizations.py` | Gera figuras e tabelas por gênero a partir dos resultados salvos |
 | `scripts/audio/` | Comandos de comparação e diagnóstico da extração de áudio |
 | `scripts/training/train_final_models.py` | Ajusta e salva os cinco pipelines finais |
+| `scripts/audio/predict_mp3.py` | Infere o gênero de um MP3 usando os cinco pipelines salvos |
 | `docs/` | Guias de instalação, extração, validação e treinamento final |
 | `tests/` | Testes automatizados e referências numéricas oficiais |
 | `validation/audio_features/` | Relatórios e histórico da validação numérica |
@@ -55,6 +56,7 @@ Os oito gêneros são Electronic, Experimental, Folk, Hip-Hop, Instrumental, Int
 Para a extensão, consulte os guias de [extração](docs/audio_features.md),
 [comparação numérica](docs/audio_validation.md) e [treinamento final](docs/final_training.md).
 O histórico das validações está em [STATUS.md](validation/audio_features/STATUS.md).
+Para usar os modelos salvos em um MP3, consulte [inferência](docs/inference.md).
 Os manifestos de execuções antigas preservam os caminhos usados quando foram gerados.
 
 Para verificar o código no ambiente de áudio já preparado:

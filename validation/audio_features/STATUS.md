@@ -136,3 +136,10 @@ reutilizando os cinco pipelines existentes. Artefatos completos em
 `artifacts/final_models/20261029T190158629599Z/`. O manifesto registra os
 parâmetros, ambiente, hashes e verificação de serialização. Ver
 [treinamento final](../../docs/final_training.md). Inferência permanece pendente.
+# Etapa 4: inferência implementada
+
+O comando `python -m scripts.audio.predict_mp3` utiliza o perfil histórico
+e os cinco pipelines salvos. A integração foi executada com a faixa de
+controle 006406; ainda não constitui avaliação externa. Consulte o
+[guia de inferência](../../docs/inference.md). As notas anteriores preservam
+o histórico das etapas e suas restrições à época.
