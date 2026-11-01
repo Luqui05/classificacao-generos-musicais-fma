@@ -26,11 +26,11 @@ chroma CQT, 22 em CENS e 20 em tonnetz.
 
 ## Reprodução e limites
 
-Script preservado: `validation/audio_features/probe_resampy_015.py`.
+Script preservado: `scripts/audio/probe_resampy_015.py`.
 Executar da raiz, com as ferramentas locais e o ambiente de áudio já preparados:
 
 ```powershell
-.\.venv-audio\Scripts\python.exe -B validation/audio_features/probe_resampy_015.py --track-id 6406 --audio validation/audio_features/runs/full_006406_20261029T181918666651Z/006406_full.mp3
+.\.venv-audio\Scripts\python.exe -B -m scripts.audio.probe_resampy_015 --track-id 6406 --audio validation/audio_features/runs/full_006406_20261029T181918666651Z/006406_full.mp3
 ```
 
 O script transpõe manualmente o laço Cython para Numba, em mono, acrescentando

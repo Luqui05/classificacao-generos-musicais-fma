@@ -2,7 +2,7 @@
 import unittest
 import numpy as np
 import librosa
-from diagnose_audio_rms import compare_waveforms, historical_rms
+from scripts.audio.diagnose_audio_rms import compare_waveforms, historical_rms
 
 
 class RmsNormalizationTests(unittest.TestCase):

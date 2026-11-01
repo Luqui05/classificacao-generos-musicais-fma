@@ -7,7 +7,7 @@ da validação cruzada não participam dessa etapa.
 **Estado atual:** comparação com áudio real executada em 28/10/2026, nas 16
 faixas selecionadas. Todas apresentaram divergências com as tolerâncias
 diagnósticas atuais; a compatibilidade numérica continua não validada.
-Consulte o [andamento e a análise da execução](validation/audio_features/STATUS.md).
+Consulte o [andamento e a análise da execução](../validation/audio_features/STATUS.md).
 
 ## MP3s necessários
 
@@ -55,14 +55,14 @@ Use o ambiente separado descrito em [audio_features.md](audio_features.md).
 Execute na raiz do projeto:
 
 ```powershell
-.\.venv-audio\Scripts\python.exe -B compare_audio_features.py compare
+.\.venv-audio\Scripts\python.exe -B -m scripts.audio.compare_audio_features compare
 ```
 
 Se os arquivos estiverem em outra pasta, aponte para a raiz que contém `030/`,
 `120/` e as demais subpastas:
 
 ```powershell
-.\.venv-audio\Scripts\python.exe -B compare_audio_features.py compare --audio-root "D:\datasets\fma_small"
+.\.venv-audio\Scripts\python.exe -B -m scripts.audio.compare_audio_features compare --audio-root "D:\datasets\fma_small"
 ```
 
 Cada execução cria uma pasta nova em `validation/audio_features/runs/`, com
@@ -137,7 +137,7 @@ O manifesto entregue já está pronto. Para gerar outra amostra, use uma pasta
 nova; o comando não substitui a seleção existente:
 
 ```powershell
-.\.venv-audio\Scripts\python.exe -B compare_audio_features.py prepare --per-genre 2 --seed 42 --output validation/audio_features/another_sample
+.\.venv-audio\Scripts\python.exe -B -m scripts.audio.compare_audio_features prepare --per-genre 2 --seed 42 --output validation/audio_features/another_sample
 ```
 
 Para compará-la, forneça `--sample validation/audio_features/another_sample`.

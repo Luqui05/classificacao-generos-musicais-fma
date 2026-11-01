@@ -26,10 +26,16 @@ Os oito gêneros são Electronic, Experimental, Folk, Hip-Hop, Instrumental, Int
 
 | Caminho | Finalidade |
 | --- | --- |
-| `prepare_dataset.py` | Prepara o CSV do experimento a partir dos arquivos oficiais |
-| `main.py` | Carrega os dados e executa os cinco modelos nas dez partições |
-| `run_statistics.py` | Executa os testes estatísticos sobre as métricas salvas |
-| `run_visualizations.py` | Gera figuras e tabelas por gênero a partir dos resultados salvos |
+| `scripts/experiment/prepare_dataset.py` | Prepara o CSV do experimento a partir dos arquivos oficiais |
+| `scripts/experiment/main.py` | Carrega os dados e executa os cinco modelos nas dez partições |
+| `scripts/experiment/run_statistics.py` | Executa os testes estatísticos sobre as métricas salvas |
+| `scripts/experiment/run_visualizations.py` | Gera figuras e tabelas por gênero a partir dos resultados salvos |
+| `scripts/audio/` | Comandos de comparação e diagnóstico da extração de áudio |
+| `scripts/training/train_final_models.py` | Ajusta e salva os cinco pipelines finais |
+| `docs/` | Guias de instalação, extração, validação e treinamento final |
+| `tests/` | Testes automatizados e referências numéricas oficiais |
+| `validation/audio_features/` | Relatórios e histórico da validação numérica |
+| `artifacts/final_models/` | Modelos locais e manifestos de treinamento; ignorados pelo Git |
 | `src/data_loader.py` | Validação dos dados, identificação e remoção de redundâncias |
 | `src/models.py` | Configurações dos classificadores e pipelines |
 | `src/cross_validation.py` | Validação cruzada, métricas e previsões fora do treinamento |
@@ -46,6 +52,21 @@ Os oito gêneros são Electronic, Experimental, Folk, Hip-Hop, Instrumental, Int
 
 ## Requisitos
 
+Para a extensão, consulte os guias de [extração](docs/audio_features.md),
+[comparação numérica](docs/audio_validation.md) e [treinamento final](docs/final_training.md).
+O histórico das validações está em [STATUS.md](validation/audio_features/STATUS.md).
+Os manifestos de execuções antigas preservam os caminhos usados quando foram gerados.
+
+Para verificar o código no ambiente de áudio já preparado:
+
+```powershell
+.\.venv-audio\Scripts\python.exe -B -m unittest discover -s tests
+```
+
+Para incluir as regressões com os dois MP3s completos oficiais, defina
+`$env:FMA_AUDIO_REGRESSION='1'` antes do comando. Os caminhos dos arquivos
+e as variáveis de configuração estão no [guia da integração](validation/audio_features/INTEGRATION.md).
+
 - Python 3.11, conforme o ambiente declarado no artigo.
 - `pip` e o módulo `venv` para criar um ambiente isolado.
 - Dependências: NumPy, pandas, scikit-learn, SciPy, statsmodels e Matplotlib.
@@ -54,16 +75,16 @@ Os oito gêneros são Electronic, Experimental, Folk, Hip-Hop, Instrumental, Int
 Os áudios não são necessários: o projeto utiliza atributos já extraídos. Não é necessário instalar Librosa para executar este experimento, nem baixar `fma_small.zip`.
 
 A extensão opcional de extração de áudio está documentada em
-[`audio_features.md`](audio_features.md), com instalação em ambiente separado e
+[`audio_features.md`](docs/audio_features.md), com instalação em ambiente separado e
 testes do extrator. A equivalência numérica com a FMA ainda precisa ser validada.
 O roteiro e os MP3s necessários para a comparação estão em
-[`audio_validation.md`](audio_validation.md).
+[`audio_validation.md`](docs/audio_validation.md).
 
 Prefira instalar **`requirements-lock.txt`** para utilizar as versões registradas. O arquivo `requirements.txt` permite instalar as dependências diretas, mas pode selecionar versões diferentes. Versões de Python e bibliotecas devem ser registradas ao reproduzir os resultados.
 
 ## 1. Obter o projeto
 
-Baixe o ZIP deste repositório e extraia seu conteúdo, ou clone-o pelo Git. Abra um terminal na pasta que contém `main.py`, `prepare_dataset.py` e os arquivos de dependências.
+Baixe o ZIP deste repositório e extraia seu conteúdo, ou clone-o pelo Git. Execute os comandos a partir da raiz, onde estão este README e os arquivos de dependências. Os comandos em `scripts/` são executados como módulos com `python -m scripts...`; `src/` contém os módulos reutilizáveis.
 
 Os comandos das próximas seções devem ser executados nessa pasta.
 
@@ -105,13 +126,13 @@ Coloque os dois arquivos em **`data/fma_metadata/`**. O script espera `data/fma_
 No Windows:
 
 ```powershell
-.\.venv\Scripts\python.exe prepare_dataset.py
+.\.venv\Scripts\python.exe -m scripts.experiment.prepare_dataset
 ```
 
 No Linux ou macOS:
 
 ```bash
-.venv/bin/python prepare_dataset.py
+.venv/bin/python -m scripts.experiment.prepare_dataset
 ```
 
 O script seleciona as faixas cujo campo `set/subset` é `small`, obtém o rótulo em `track/genre_top`, alinha os atributos pelo identificador e remove registros sem gênero, caso existam. Os nomes hierárquicos dos atributos são convertidos em nomes simples, como `chroma_cens_kurtosis_01`.
@@ -122,7 +143,7 @@ A saída é **`data/fma_small_features.csv`**, com 8.000 linhas e 520 colunas:
 - 518 colunas numéricas: entradas dos classificadores;
 - `genre`: gênero musical a ser previsto.
 
-O identificador e o gênero não são utilizados como atributos de entrada. A remoção das redundâncias ocorre posteriormente, na execução de `main.py`.
+O identificador e o gênero não são utilizados como atributos de entrada. A remoção das redundâncias ocorre posteriormente, na execução de `scripts/experiment/main.py`.
 
 Se o CSV preparado já estiver presente, é possível executar o experimento sem baixar novamente os arquivos oficiais. Execute a preparação para reproduzir essa etapa; ela sobrescreve o CSV de destino.
 
@@ -149,24 +170,24 @@ Execute os três scripts **nesta ordem**.
 ### Windows
 
 ```powershell
-.\.venv\Scripts\python.exe main.py
-.\.venv\Scripts\python.exe run_statistics.py
-.\.venv\Scripts\python.exe run_visualizations.py
+.\.venv\Scripts\python.exe -m scripts.experiment.main
+.\.venv\Scripts\python.exe -m scripts.experiment.run_statistics
+.\.venv\Scripts\python.exe -m scripts.experiment.run_visualizations
 ```
 
 ### Linux ou macOS
 
 ```bash
-.venv/bin/python main.py
-.venv/bin/python run_statistics.py
-.venv/bin/python run_visualizations.py
+.venv/bin/python -m scripts.experiment.main
+.venv/bin/python -m scripts.experiment.run_statistics
+.venv/bin/python -m scripts.experiment.run_visualizations
 ```
 
 | Etapa | Operação | Treina modelos? |
 | --- | --- | --- |
-| `main.py` | Valida os dados, remove redundâncias e executa 50 treinamentos e avaliações | Sim |
-| `run_statistics.py` | Lê `fold_results.csv` e calcula ranks e testes | Não |
-| `run_visualizations.py` | Lê métricas, previsões e ranks para gerar tabelas e figuras | Não |
+| `scripts/experiment/main.py` | Valida os dados, remove redundâncias e executa 50 treinamentos e avaliações | Sim |
+| `scripts/experiment/run_statistics.py` | Lê `fold_results.csv` e calcula ranks e testes | Não |
+| `scripts/experiment/run_visualizations.py` | Lê métricas, previsões e ranks para gerar tabelas e figuras | Não |
 
 O tempo de execução depende do computador. Os scripts criam as pastas de saída e sobrescrevem os arquivos correspondentes; preserve uma cópia dos resultados anteriores se precisar compará-los.
 
@@ -219,9 +240,9 @@ Esses valores são referências dos resultados salvos, não uma garantia de iden
 | Situação | Como resolver |
 | --- | --- |
 | `tracks.csv` ou `features.csv` não encontrado | Confira se ambos estão diretamente em `data/fma_metadata/` |
-| `fma_small_features.csv` não encontrado | Execute `prepare_dataset.py` ou coloque o CSV preparado em `data/` |
-| `fold_results.csv` não encontrado | Execute `main.py` antes da análise estatística |
-| `average_ranks.csv` não encontrado | Execute `run_statistics.py` antes de gerar as figuras |
+| `fma_small_features.csv` não encontrado | Execute `scripts/experiment/prepare_dataset.py` ou coloque o CSV preparado em `data/` |
+| `fold_results.csv` não encontrado | Execute `scripts/experiment/main.py` antes da análise estatística |
+| `average_ranks.csv` não encontrado | Execute `scripts/experiment/run_statistics.py` antes de gerar as figuras |
 | `ModuleNotFoundError` | Instale o arquivo de dependências usando o mesmo Python do ambiente virtual utilizado para executar os scripts |
 | Base com estrutura inesperada | Utilize os arquivos oficiais com os cabeçalhos originais; não os reexporte por editores de planilha antes da preparação |
 

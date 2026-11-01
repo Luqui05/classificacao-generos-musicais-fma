@@ -15,7 +15,7 @@ from sklearn.utils.validation import check_is_fitted
 from src.data_loader import load_dataset
 from src.models import build_models
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parents[2]
 
 def assert_same_state(left, right):
     """Compara estado lógico, ignorando padding de structs internos da árvore."""
@@ -60,7 +60,7 @@ def train(csv_path, output):
         raise FileExistsError(f'Diretório já existe: {output}')
     versions = check_environment(ROOT/'requirements-lock.txt')
     protected = [ROOT/'requirements-lock.txt', ROOT/'src/models.py', ROOT/'src/data_loader.py',
-                 ROOT/'main.py', ROOT/'src/cross_validation.py', Path(csv_path),
+                 ROOT/'scripts/experiment/main.py', ROOT/'src/cross_validation.py', Path(csv_path),
                  *[p for p in (ROOT/'results').rglob('*') if p.is_file()]]
     before = {str(p.resolve()): digest(p) for p in protected}
     bundle = load_dataset(csv_path, drop_duplicate_samples=True)

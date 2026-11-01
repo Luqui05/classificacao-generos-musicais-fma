@@ -17,7 +17,7 @@ import numpy as np
 import pandas as pd
 import soundfile as sf
 
-from diagnose_audio_rms import digest, historical_rms
+from scripts.audio.diagnose_audio_rms import digest, historical_rms
 from src.audio_features import FEATURE_NAMES, _feature_statistics, extract_features
 from src.audio_validation import compare_vectors
 
@@ -101,7 +101,7 @@ def extract_profile(audio, signal, sample_rate, parameters, legacy_cqt=None):
 
 
 def main():
-    root = Path(__file__).resolve().parent
+    root = Path(__file__).resolve().parents[2]
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--audio', type=Path, default=root / 'validation/audio_features/runs/full_030520_20261028T203735208700Z/030520_full.mp3')
     parser.add_argument('--baseline', type=Path, default=root / 'validation/audio_features/runs/20261028T192711309854Z')
@@ -115,7 +115,7 @@ def main():
         sys.path.insert(0, str(args.resampy_path.resolve()))
     cqt_adapters = {}
     if any(PROFILES[name].get('legacy_cqt') for name in args.profiles):
-        from audio_legacy_diagnostics import load_legacy_cqt
+        from scripts.audio.audio_legacy_diagnostics import load_legacy_cqt
         cqt_adapters[False] = load_legacy_cqt(args.legacy_source)
         cqt_adapters[True] = load_legacy_cqt(args.legacy_source, args.legacy_filters)
     table = pd.read_csv(args.baseline / 'differences.csv')
@@ -165,7 +165,7 @@ def main():
         provenance['resampy_source'] = json.loads((args.resampy_path / 'source.json').read_text(encoding='utf-8'))
     if cqt_adapters:
         provenance['legacy_cqt_sources'] = {p.name: digest(p) for p in args.legacy_source.glob('*.py')}
-        provenance['legacy_cqt_adapter_sha256'] = digest(root / 'audio_legacy_diagnostics.py')
+        provenance['legacy_cqt_adapter_sha256'] = digest(root / 'scripts/audio/audio_legacy_diagnostics.py')
         provenance['legacy_filter_sources'] = {p.name: digest(p) for p in args.legacy_filters.glob('*.npz')}
         provenance['legacy_packages'] = [json.loads((directory / 'source.json').read_text(encoding='utf-8'))
                                          for directory in (args.legacy_source, args.legacy_filters)]

@@ -6,7 +6,7 @@ import pandas as pd
 from src.visualizations import generate_visualizations
 
 
-PROJECT_ROOT = Path(__file__).resolve().parent
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 FOLD_RESULTS_PATH = (
     PROJECT_ROOT

@@ -9,7 +9,7 @@ from src.data_loader import load_dataset, save_dataset_reports
 from src.models import build_models
 
 
-PROJECT_ROOT = Path(__file__).resolve().parent
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
 DATASET_PATH = PROJECT_ROOT / "data" / "fma_small_features.csv"
 TABLES_DIRECTORY = PROJECT_ROOT / "results" / "tables"
 

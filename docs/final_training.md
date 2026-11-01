@@ -10,7 +10,7 @@ a comparação inicial por hash não era adequada ao padding interno da árvore.
 Execute na raiz do projeto, no ambiente original:
 
 ```powershell
-.\.venv\Scripts\python.exe -B train_final_models.py
+.\.venv\Scripts\python.exe -B -m scripts.training.train_final_models
 ```
 
 O script verifica todas as versões fixadas em `requirements-lock.txt`, reutiliza

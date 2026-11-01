@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pandas as pd
 
-PROJECT_ROOT = Path(__file__).resolve().parent
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
 METADATA_DIRECTORY = PROJECT_ROOT / "data" / "fma_metadata"
 OUTPUT_PATH = PROJECT_ROOT / "data" / "fma_small_features.csv"
 

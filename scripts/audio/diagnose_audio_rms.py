@@ -77,7 +77,7 @@ def main():
     parser.add_argument('--ffmpeg', type=Path, help='Executável portátil; não altera o PATH')
     parser.add_argument('--audio', type=Path, help='Outra versão da faixa 030520; mantém a referência desse ID')
     args = parser.parse_args()
-    root = Path(__file__).resolve().parent
+    root = Path(__file__).resolve().parents[2]
     baseline = root / 'validation/audio_features/runs/20261028T192711309854Z'
     audio = args.audio.resolve() if args.audio else root / 'data/fma_small/030/030520.mp3'
     with (baseline / 'differences.csv').open(newline='', encoding='utf-8') as stream:

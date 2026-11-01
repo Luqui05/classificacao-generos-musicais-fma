@@ -2,7 +2,7 @@ from pathlib import Path
 import tempfile
 import unittest
 from unittest.mock import patch
-from train_final_models import train, check_environment, assert_same_state
+from scripts.training.train_final_models import train, check_environment, assert_same_state
 import joblib
 import numpy as np
 from sklearn.tree import DecisionTreeClassifier
@@ -31,6 +31,6 @@ class TrainingSafetyTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             lock = Path(directory)/'lock.txt'
             lock.write_text('numpy==1.0.0\n')
-            with patch('train_final_models.version', return_value='2.0.0'):
+            with patch('scripts.training.train_final_models.version', return_value='2.0.0'):
                 with self.assertRaisesRegex(RuntimeError, 'numpy'):
                     check_environment(lock)

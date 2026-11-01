@@ -9,7 +9,7 @@ colunas correspondem aos atributos de `data/fma_small_features.csv`, sem
 automatizados. A comparação real nas 16 faixas selecionadas apresentou
 divergências; a equivalência numérica com os valores publicados pela FMA
 continua não validada. O acompanhamento está em
-[STATUS.md](validation/audio_features/STATUS.md). Não há treinamento nem
+[STATUS.md](../validation/audio_features/STATUS.md). Não há treinamento nem
 pipeline de inferência implementados nesta extensão.
 
 ## Instalação opcional e isolada
@@ -117,4 +117,4 @@ numérica com a FMA. Os testes não escrevem em `data/` nem em `results/`.
 Para reproduzir o perfil validado nas faixas completas 030520 e 006406,
 use `extract_features(path, profile='fma-2017', ffmpeg_path=...)`.
 O comportamento anterior continua disponível e é o padrão `current`.
-Consulte [contrato e regressões](validation/audio_features/INTEGRATION.md).
+Consulte [contrato e regressões](../validation/audio_features/INTEGRATION.md).

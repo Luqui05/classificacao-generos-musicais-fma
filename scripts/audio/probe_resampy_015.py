@@ -36,11 +36,11 @@ parser=argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--track-id',type=int,required=True)
 parser.add_argument('--audio',type=Path,required=True)
 args=parser.parse_args()
-source=(root/'diagnose_full_audio.py').read_text(encoding='utf-8').replace('30520',str(args.track_id)).replace('030520',f'{args.track_id:06d}')
+source=(root/'scripts/audio/diagnose_full_audio.py').read_text(encoding='utf-8').replace('30520',str(args.track_id)).replace('030520',f'{args.track_id:06d}')
 sys.argv=['diagnose_full_audio.py','--audio',str(args.audio),'--profiles','legacy_cens']
 runs=root/'validation/audio_features/runs'
 before=set(runs.glob('full_features_*'))
-exec(compile(source,str(root/'diagnose_full_audio.py'),'exec'),{'__name__':'__main__','__file__':str(root/'diagnose_full_audio.py')})
+exec(compile(source,str(root/'scripts/audio/diagnose_full_audio.py'),'exec'),{'__name__':'__main__','__file__':str(root/'scripts/audio/diagnose_full_audio.py')})
 for output in set(runs.glob('full_features_*'))-before:
     (output/'interpolator_override.json').write_text(json.dumps(dict(
         probe_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),

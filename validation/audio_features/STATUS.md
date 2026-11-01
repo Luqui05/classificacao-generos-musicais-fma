@@ -16,7 +16,7 @@ as evidências da validação, sem substituir os relatórios de execução.
 ## Execução de referência
 
 - Pasta: `runs/20261028T192711309854Z/` (relatórios locais ignorados pelo Git).
-- Comando: `.\.venv-audio\Scripts\python.exe -B compare_audio_features.py compare`.
+- Comando: `.\.venv-audio\Scripts\python.exe -B -m scripts.audio.compare_audio_features compare`.
 - Tolerâncias diagnósticas: `rtol=1e-4`, `atol=1e-6`.
 - 16 faixas processadas, 518 atributos por faixa: 8.288 comparações.
 - 465 valores dentro das tolerâncias (5,61%); 7.823 acima (94,39%).
@@ -135,4 +135,4 @@ Treinamento final concluído nos 7.984 registros oficiais deduplicados,
 reutilizando os cinco pipelines existentes. Artefatos completos em
 `artifacts/final_models/20261029T190158629599Z/`. O manifesto registra os
 parâmetros, ambiente, hashes e verificação de serialização. Ver
-[treinamento final](../../final_training.md). Inferência permanece pendente.
+[treinamento final](../../docs/final_training.md). Inferência permanece pendente.

@@ -7,8 +7,8 @@ from unittest.mock import patch
 import librosa
 import numpy as np
 
-from audio_legacy_diagnostics import LegacyNumpy, load_functions
-from diagnose_full_audio import PROFILES, extract_profile, historical_zcr
+from scripts.audio.audio_legacy_diagnostics import LegacyNumpy, load_functions
+from scripts.audio.diagnose_full_audio import PROFILES, extract_profile, historical_zcr
 
 
 class HistoricalZcrTests(unittest.TestCase):
@@ -39,7 +39,7 @@ class DiagnosticIsolationTests(unittest.TestCase):
     def test_library_functions_are_restored_after_failure(self):
         originals = (librosa.load, librosa.stft, librosa.cqt, librosa.feature.rms,
                      librosa.feature.chroma_cqt, librosa.feature.chroma_cens, librosa.filters.chroma)
-        with patch('diagnose_full_audio.extract_features', side_effect=RuntimeError('probe')):
+        with patch('scripts.audio.diagnose_full_audio.extract_features', side_effect=RuntimeError('probe')):
             with self.assertRaisesRegex(RuntimeError, 'probe'):
                 extract_profile(Path('unused.mp3'), np.ones(4096), 44100, PROFILES['chroma_float64'])
         restored = (librosa.load, librosa.stft, librosa.cqt, librosa.feature.rms,
