@@ -1,9 +1,11 @@
 # Inferência de um MP3
 
+Para executar os exemplos, defina `$models`, `$audioRun` e `$ffmpeg` conforme o [roteiro completo do README](../README.md#6-reprodução-da-extensão-de-áudio). Os identificadores históricos citados no texto não existem em um clone novo.
+
 Execute da raiz, no ambiente de áudio, usando os pipelines finais já treinados:
 
 ```powershell
-.\.venv-audio\Scripts\python.exe -B -m scripts.audio.predict_mp3 "C:\musicas\faixa.mp3" --models artifacts/final_models/20261029T190158629599Z --ffmpeg validation/audio_features/runs/tools/imageio_ffmpeg_0_6_0/ffmpeg-win-x86_64-v7.1.exe
+.\.venv-audio\Scripts\python.exe -B -m scripts.audio.predict_mp3 "C:\musicas\faixa.mp3" --models $models --ffmpeg $ffmpeg
 ```
 
 Substitua o caminho do MP3 e, se necessário, o do FFmpeg. Para configuração

@@ -7,6 +7,22 @@ O projeto compara **Perceptron, SVM com núcleo RBF, KNN, árvore de decisão e 
 **Autor:** Lucas Henrique Teixeira Ribeiro.  
 **Coautores do artigo:** Marcelo R. Trierveiler e Ayslan T. Possebom.
 
+
+## Sumário
+
+- [Visão geral](#visão-geral)
+- [Estrutura do projeto](#estrutura-do-projeto)
+- [Requisitos](#requisitos)
+- [1. Obter o projeto](#1-obter-o-projeto)
+- [2. Criar o ambiente e instalar as dependências](#2-criar-o-ambiente-e-instalar-as-dependências)
+- [3. Obter e preparar os dados](#3-obter-e-preparar-os-dados)
+- [4. Executar o experimento](#4-executar-o-experimento)
+- [5. Consultar os resultados](#5-consultar-os-resultados)
+- [Protocolo e limites de interpretação](#protocolo-e-limites-de-interpretação)
+- [Problemas comuns](#problemas-comuns)
+- [Referência e atribuição dos dados](#referência-e-atribuição-dos-dados)
+- [6. Reprodução da extensão de áudio](#6-reprodução-da-extensão-de-áudio)
+
 ## Visão geral
 
 | Item | Configuração |
@@ -264,3 +280,93 @@ Esses valores são referências dos resultados salvos, não uma garantia de iden
 Defferrard, M., Benzi, K., Vandergheynst, P. e Bresson, X. (2017). **FMA: A Dataset for Music Analysis.** Proceedings of the 18th International Society for Music Information Retrieval Conference, p. 316–323. [Artigo](https://arxiv.org/abs/1612.01840) · [Repositório oficial](https://github.com/mdeff/fma).
 
 Os atributos acústicos são provenientes da FMA; este projeto seleciona e reorganiza os dados para o experimento. Consulte a seção [Acknowledgments and Licenses](https://github.com/mdeff/fma#acknowledgments-and-licenses) para as condições e os créditos dos materiais originais. Os áudios não são redistribuídos neste projeto.
+
+## 6. Reprodução da extensão de áudio
+
+O roteiro abaixo é para Windows x64/PowerShell, na raiz do clone. Execute primeiro
+as etapas 1 a 5. Para preservar resultados históricos, faça a reprodução do
+experimento original em um clone separado: seus comandos sobrescrevem `results/`.
+Não é necessário baixar áudio para o experimento original.
+
+### Ambiente de áudio e FFmpeg
+
+```powershell
+py -3.11 -m venv .venv-audio
+.\.venv-audio\Scripts\python.exe -m pip install -r requirements-audio-lock.txt
+if ($LASTEXITCODE -ne 0) { throw 'Falha na instalação de áudio.' }
+.\.venv-audio\Scripts\python.exe -m pip check
+.\.venv-audio\Scripts\python.exe -B -m unittest discover -s tests
+```
+
+O lock de áudio registra as dependências do ambiente validado, incluindo as
+transitivas; não substitui o lock original. Não garante identidade entre sistemas
+operacionais. A suíte padrão ignora a regressão que exige dois MP3s completos;
+para executá-la, siga [a integração histórica](validation/audio_features/INTEGRATION.md).
+
+Obtenha o FFmpeg portátil validado em uma pasta ignorada pelo Git:
+
+```powershell
+$tools = 'validation/audio_features/runs/tools/reproducao'
+New-Item -ItemType Directory -Force $tools | Out-Null
+.\.venv-audio\Scripts\python.exe -m pip download --only-binary=:all: --no-deps --platform win_amd64 imageio-ffmpeg==0.6.0 --dest $tools
+if ($LASTEXITCODE -ne 0) { throw 'Falha no download do FFmpeg.' }
+$wheel = @(Get-ChildItem $tools -Filter '*.whl')
+if ($wheel.Count -ne 1) { throw 'Esperava um único wheel.' }
+.\.venv-audio\Scripts\python.exe -m zipfile -e $wheel[0].FullName "$tools/extraido"
+$executables = @(Get-ChildItem "$tools/extraido" -Recurse -Filter 'ffmpeg*.exe')
+if ($executables.Count -ne 1) { throw 'Executável não identificado.' }
+$ffmpeg = $executables[0].FullName
+if ((Get-FileHash $ffmpeg -Algorithm SHA256).Hash.ToLowerInvariant() -ne '2ce797a0f88d7f067180338fb227f7b1928ea727bd9a4d7a1d022f7c52af71a3') { throw 'FFmpeg diferente do validado.' }
+```
+
+### Gerar os modelos e demonstrar inferência
+
+Mantenha a mesma sessão PowerShell para reutilizar as variáveis. Os nomes abaixo
+identificam sua reprodução; as pastas de saída devem ser novas.
+
+```powershell
+$run = Get-Date -Format 'yyyyMMddTHHmmssfffffff'
+$models = "artifacts/final_models/reproducao_$run"
+$audioRun = "artifacts/unseen_evaluation/reproducao_$run"
+$comparison = "artifacts/unseen_official_comparison/reproducao_$run"
+.\.venv\Scripts\python.exe -B -m scripts.training.train_final_models --output $models
+if ($LASTEXITCODE -ne 0) { throw 'Treinamento final falhou.' }
+```
+
+Para uma demonstração opcional, substitua o caminho pelo seu MP3:
+
+```powershell
+.\.venv-audio\Scripts\python.exe -B -m scripts.audio.predict_mp3 "C:\musicas\faixa.mp3" --models $models --ffmpeg $ffmpeg
+```
+
+A saída mostra os cinco gêneros previstos e o diretório do registro. Não há
+probabilidade de acerto nem reconhecimento de gêneros fora das oito classes.
+
+### Preparar e avaliar as 40 faixas
+
+1. Obtenha `tracks.csv` e `features.csv` conforme a etapa 3, mesmo que tenha usado
+   o CSV preparado para treinar.
+2. Use a seleção publicada em `validation/unseen_fma/sample/mp3_paths.txt`.
+   Para regenerar e conferir a seleção, siga [reprodução da seleção](docs/unseen_fma.md#reprodução-da-seleção).
+3. Siga [MP3s necessários](docs/unseen_fma.md#mp3s-necessários) para baixar,
+   verificar e extrair os 40 arquivos. O download é de aproximadamente **22 GiB**;
+   reserve espaço adicional. Pare se o download, hash ou extração falhar.
+4. Com os 40 arquivos em `data/fma_medium/`, execute:
+
+```powershell
+.\.venv-audio\Scripts\python.exe -B -m scripts.audio.evaluate_unseen_fma --models $models --ffmpeg $ffmpeg --output $audioRun
+if ($LASTEXITCODE -ne 0) { throw 'Avaliação falhou; confira o registro antes de continuar.' }
+.\.venv-audio\Scripts\python.exe -B -m scripts.audio.compare_unseen_official --audio-run $audioRun --models $models --output $comparison
+if ($LASTEXITCODE -ne 0) { throw 'Comparação oficial falhou.' }
+Import-Csv "$comparison/summary.csv" | Format-Table -AutoSize
+```
+
+A avaliação salva `predictions.csv`, `metrics.json`, matrizes de confusão e
+`run.json`. A comparação salva `summary.csv`, `paired_predictions.csv` e os
+registros de proveniência. Confira `status: complete` nos registros de execução.
+As pastas novas preservam as execuções anteriores e são ignoradas pelo Git.
+
+São cinco faixas por gênero, fora da Small, mas da própria FMA. A avaliação é
+exploratória e não representa uma base independente. Os resultados de referência
+e as diferenças entre atributos oficiais e extraídos estão em
+[OFFICIAL_COMPARISON.md](validation/unseen_fma/OFFICIAL_COMPARISON.md).

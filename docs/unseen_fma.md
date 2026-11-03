@@ -1,9 +1,11 @@
 # Faixas adicionais da FMA para avaliar a inferência
 
+Para executar os exemplos, defina `$models`, `$audioRun` e `$ffmpeg` conforme o [roteiro completo do README](../README.md#6-reprodução-da-extensão-de-áudio). Os identificadores históricos citados no texto não existem em um clone novo.
+
 ## Comparar com os atributos oficiais das mesmas faixas
 
 ```powershell
-.\.venv-audio\Scripts\python.exe -B -m scripts.audio.compare_unseen_official --audio-run artifacts/unseen_evaluation/20261103T005557916627Z --models artifacts/final_models/20261029T190158629599Z
+.\.venv-audio\Scripts\python.exe -B -m scripts.audio.compare_unseen_official --audio-run $audioRun --models $models
 ```
 
 A comparação reutiliza os vetores extraídos salvos na execução anterior e
@@ -22,7 +24,7 @@ Resultados e interpretação: `validation/unseen_fma/OFFICIAL_COMPARISON.md`.
 Após conferir os áudios, executar na raiz do projeto:
 
 ```powershell
-.\.venv-audio\Scripts\python.exe -B -m scripts.audio.evaluate_unseen_fma --models artifacts/final_models/20261029T190158629599Z --ffmpeg validation/audio_features/runs/tools/imageio_ffmpeg_0_6_0/ffmpeg-win-x86_64-v7.1.exe
+.\.venv-audio\Scripts\python.exe -B -m scripts.audio.evaluate_unseen_fma --models $models --ffmpeg $ffmpeg
 ```
 
 A saída fica em uma pasta nova de `artifacts/unseen_evaluation/`, ignorada pelo

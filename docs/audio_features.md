@@ -33,7 +33,7 @@ Execute a partir da raiz do projeto, em um ambiente separado do experimento:
 ```powershell
 py -3.11 -m venv .venv-audio
 .\.venv-audio\Scripts\python.exe -m pip install -r requirements-lock.txt
-.\.venv-audio\Scripts\python.exe -m pip install -r requirements-audio.txt
+.\.venv-audio\Scripts\python.exe -m pip install -r requirements-audio-lock.txt
 .\.venv-audio\Scripts\python.exe -m pip check
 ```
 
