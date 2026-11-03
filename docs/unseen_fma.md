@@ -1,5 +1,22 @@
 # Faixas adicionais da FMA para avaliar a inferência
 
+## Comparar com os atributos oficiais das mesmas faixas
+
+```powershell
+.\.venv-audio\Scripts\python.exe -B -m scripts.audio.compare_unseen_official --audio-run artifacts/unseen_evaluation/20261103T005557916627Z --models artifacts/final_models/20261029T190158629599Z
+```
+
+A comparação reutiliza os vetores extraídos salvos na execução anterior e
+confere que reproduzem exatamente suas 200 predições. Aplica os mesmos modelos
+às mesmas 40 linhas de `features.csv`, com as colunas na ordem esperada.
+A saída fica em nova pasta de `artifacts/unseen_official_comparison/`, ignorada
+pelo Git. `summary.csv` contém métricas e mudanças de acerto;
+`paired_predictions.csv` permite conferir cada decisão. Também salva atributos
+oficiais selecionados, relatórios por classe, matrizes de confusão, contagens
+de atributos na tolerância original e hashes de proveniência.
+
+Resultados e interpretação: `validation/unseen_fma/OFFICIAL_COMPARISON.md`.
+
 ## Avaliar os cinco pipelines
 
 Após conferir os áudios, executar na raiz do projeto:

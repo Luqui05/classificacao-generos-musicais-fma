@@ -12,6 +12,7 @@ validation/audio_features/runs/
 artifacts/final_models/
 artifacts/inference/
 artifacts/unseen_evaluation/
+artifacts/unseen_official_comparison/
 data/fma_medium/
 data/fma_medium.zip
 validation/unseen_fma/runs/

@@ -1,5 +1,9 @@
 # Andamento da avaliação em faixas adicionais da FMA
 
+Comparação pareada posterior concluída, sem novo treinamento:
+[resultados e interpretação](OFFICIAL_COMPARISON.md). O SVM obteve F1 macro
+0,4973 com atributos oficiais, contra 0,4232 com atributos extraídos.
+
 Em 02/11/2026, o usuário executou localmente e apresentou a saída:
 
 - Hash SHA-1 do ZIP correspondente ao publicado pela FMA.
