@@ -1,13 +1,22 @@
-# Comparação numérica com a FMA — etapa 3
+# Comparação numérica com os atributos oficiais da FMA
 
 O comando `compare_audio_features.py` compara o extrator atual com as linhas
 do arquivo oficial `data/fma_metadata/features.csv`. Os modelos e os resultados
 da validação cruzada não participam dessa etapa.
 
-**Estado atual:** comparação com áudio real executada em 28/10/2026, nas 16
-faixas selecionadas. Todas apresentaram divergências com as tolerâncias
-diagnósticas atuais; a compatibilidade numérica continua não validada.
-Consulte o [andamento e a análise da execução](../validation/audio_features/STATUS.md).
+**Estado atual:** a comparação inicial de 28/10/2026 encontrou divergências
+nas 16 faixas Small selecionadas. A investigação posterior levou ao perfil
+explícito `fma-2017`, integrado ao extrator e verificado nas versões completas
+030520 e 006406: 518/518 atributos dentro das tolerâncias originais
+(`atol=1e-6`, `rtol=1e-4`). Isso não comprova equivalência nos trechos Small
+nem na base inteira. Consulte o [contrato e as regressões atuais](../validation/audio_features/INTEGRATION.md).
+
+As instruções de amostragem abaixo preservam o diagnóstico inicial com os
+trechos Small, não são o procedimento de regressão das duas faixas completas.
+A avaliação posterior de 40 faixas Medium fora do treinamento, com os modelos
+salvos, tem [guia próprio](unseen_fma.md) e
+[comparação entre atributos oficiais e extraídos](../validation/unseen_fma/OFFICIAL_COMPARISON.md).
+O [histórico](../validation/audio_features/STATUS.md) preserva os resultados de cada etapa.
 
 ## MP3s necessários
 

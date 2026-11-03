@@ -74,13 +74,24 @@ e as variáveis de configuração estão no [guia da integração](validation/au
 - Dependências: NumPy, pandas, scikit-learn, SciPy, statsmodels e Matplotlib.
 - Acesso aos arquivos oficiais da FMA apenas para preparar novamente os dados.
 
-Os áudios não são necessários: o projeto utiliza atributos já extraídos. Não é necessário instalar Librosa para executar este experimento, nem baixar `fma_small.zip`.
+Os áudios não são necessários para reproduzir o experimento original com atributos oficiais. A extensão de extração e inferência exige arquivos de áudio e dependências próprias.
 
 A extensão opcional de extração de áudio está documentada em
 [`audio_features.md`](docs/audio_features.md), com instalação em ambiente separado e
-testes do extrator. A equivalência numérica com a FMA ainda precisa ser validada.
+testes do extrator. O perfil explícito `fma-2017` reproduziu os 518 atributos
+dentro das tolerâncias originais nas faixas completas 030520 e 006406.
+Isso não estabelece equivalência geral: nos 40 trechos de 30 segundos avaliados,
+somente 21 a 51 atributos por faixa ficaram dentro das tolerâncias.
 O roteiro e os MP3s necessários para a comparação estão em
 [`audio_validation.md`](docs/audio_validation.md).
+
+Os cinco pipelines finais e a inferência de MP3 estão implementados. A avaliação
+complementar usou 40 faixas fora do treinamento, provenientes da própria FMA,
+e comparou atributos extraídos e oficiais sem retreinar os modelos. Consulte
+[seleção e comandos de avaliação](docs/unseen_fma.md) e
+[resultados e limitações](validation/unseen_fma/OFFICIAL_COMPARISON.md).
+Áudios, FFmpeg, modelos e artefatos detalhados das execuções não são distribuídos
+no Git; os guias indicam os insumos e os procedimentos de reprodução.
 
 Prefira instalar **`requirements-lock.txt`** para utilizar as versões registradas. O arquivo `requirements.txt` permite instalar as dependências diretas, mas pode selecionar versões diferentes. Versões de Python e bibliotecas devem ser registradas ao reproduzir os resultados.
 

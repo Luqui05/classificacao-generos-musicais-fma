@@ -5,18 +5,26 @@ retorna uma `pandas.Series` com 518 valores `float32`. Os nomes e a ordem das
 colunas correspondem aos atributos de `data/fma_small_features.csv`, sem
 `track_id` nem `genre`. O nome da Series é o nome do arquivo sem a extensão.
 
-**Estado da validação:** o esquema e o contrato do extrator têm testes
-automatizados. A comparação real nas 16 faixas selecionadas apresentou
-divergências; a equivalência numérica com os valores publicados pela FMA
-continua não validada. O acompanhamento está em
-[STATUS.md](../validation/audio_features/STATUS.md). Não há treinamento nem
-pipeline de inferência implementados nesta extensão.
+**Estado da validação:** o perfil explícito `fma-2017` reproduziu os 518 valores
+oficiais nas faixas completas 030520 e 006406 dentro de
+`abs(extraído - oficial) <= 1e-6 + 1e-4 * abs(oficial)`.
+A validação é limitada a esses arquivos e ao ambiente documentado; não garante
+equivalência em outros áudios ou trechos. Os diagnósticos iniciais dos trechos
+Small permanecem preservados no [histórico](../validation/audio_features/STATUS.md).
+O perfil moderno `current` é o padrão e não possui essa garantia numérica.
+
+Os cinco pipelines finais foram salvos e a [inferência](inference.md) está
+implementada. A [avaliação complementar](unseen_fma.md) processou 40 faixas fora
+do treinamento, da mesma FMA. Nesses trechos de 30 segundos, somente 21 a 51
+dos 518 atributos por faixa ficaram na tolerância em relação aos oficiais.
+Consulte a [comparação pareada e seus limites](../validation/unseen_fma/OFFICIAL_COMPARISON.md).
 
 ## Instalação opcional e isolada
 
 `requirements.txt` e `requirements-lock.txt` mantêm o conteúdo original do
 experimento, sem dependências de áudio. `requirements-audio.txt` fixa a
-dependência direta `librosa==0.11.0` e usa o lock original como restrição para
+dependências diretas `librosa==0.11.0`, `numba==0.68.1` e `soundfile==0.14.0`
+e usa o lock original como restrição para
 as bibliotecas compartilhadas. Isso impede atualizações dessas versões;
 uma combinação incompatível deve falhar na resolução, em vez de atualizá-las.
 
@@ -33,14 +41,16 @@ Em Linux/macOS, use `python3.11 -m venv .venv-audio` e
 `.venv-audio/bin/python` nos comandos seguintes.
 
 O arquivo opcional não é um lock completo das dependências transitivas de
-áudio. Para a futura comparação numérica, será necessário registrar também
+áudio. Para reproduzir uma comparação numérica, registre também
 Python, todas as versões instaladas, sistema operacional, decodificador e
 parâmetros utilizados, em um registro separado do lock original.
 
-O suporte a MP3 depende do backend disponível no ambiente. Se houver falha
+No perfil `current`, o suporte a MP3 depende do backend disponível. Se houver falha
 de decodificação, verifique o erro original encadeado; conforme o backend,
 pode ser necessário disponibilizar FFmpeg no `PATH`. Os testes unitários
-abaixo não verificam a instalação de um decodificador.
+com mocks não verificam a instalação de um decodificador. O perfil `fma-2017`
+exige o caminho explícito do FFmpeg; sua versão validada e seu hash estão no
+[guia de integração](../validation/audio_features/INTEGRATION.md).
 
 ## Uso do extrator
 
@@ -53,8 +63,10 @@ print(features.shape)  # (518,)
 
 O carregamento usa `sr=None` e `mono=True`: preserva a taxa de amostragem e
 converte para mono. O arquivo inteiro é analisado, sem corte, normalização de
-volume ou seleção automática de trecho. A política para músicas completas
-será definida antes da avaliação externa.
+volume ou seleção automática de trecho. No perfil histórico, a decodificação
+usa FFmpeg `mp3` de ponto fixo para PCM16 e a média dos canais, preservando a
+taxa nativa. Uma gravação completa e um trecho de 30 segundos não são entradas
+numericamente equivalentes, mesmo quando compartilham o `track_id`.
 
 O vetor é rejeitado se tiver nomes/ordem inesperados, valores NaN/infinito ou
 valores que transbordem ao converter para `float32`. Uma faixa silenciosa,
@@ -86,17 +98,28 @@ testes com mocks não substituem essa comparação.
 
 ## Testes automatizados
 
-Os testes usam `unittest` da biblioteca padrão, NumPy, pandas e SciPy. Não
-exigem Librosa, FFmpeg, rede, treinamento ou áudio real. O teste de esquema lê
-somente o cabeçalho de `data/fma_small_features.csv`; execute na cópia do
-projeto que contém esse arquivo.
+A suíte completa exige o ambiente de áudio, incluindo Librosa. Ela reúne
+contratos com mocks, controles analíticos com sinais sintéticos, testes de
+segurança dos pipelines e regressões reais opcionais. O teste de esquema lê
+o cabeçalho de `data/fma_small_features.csv`; execute na raiz do projeto.
 
 ```powershell
-.\.venv\Scripts\python.exe -B -m unittest discover -s tests -v
+.\.venv-audio\Scripts\python.exe -B -m unittest discover -s tests -v
 ```
 
-Também é possível usar o Python do ambiente `.venv-audio`. A opção `-B` evita
-gravar bytecode durante a verificação.
+A opção `-B` evita gravar bytecode. Sem `FMA_AUDIO_REGRESSION=1`, a regressão
+real é explicitamente ignorada; isso não comprova extração numérica de MP3.
+Com os dois arquivos completos e FFmpeg disponíveis, execute:
+
+```powershell
+$env:FMA_AUDIO_REGRESSION='1'
+.\.venv-audio\Scripts\python.exe -B -m unittest discover -s tests -v
+```
+
+Os caminhos e as variáveis `FMA_FFMPEG`, `FMA_AUDIO_30520` e `FMA_AUDIO_6406`
+estão no [guia de integração](../validation/audio_features/INTEGRATION.md).
+Na revisão de 02/11/2026, essa execução passou com 61 testes, sem falhas,
+erros ou testes ignorados. Esse total é um registro daquela revisão.
 
 Cobertura de comportamento:
 
