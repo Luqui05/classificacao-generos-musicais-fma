@@ -1,0 +1,38 @@
+{
+  "seed": 42,
+  "per_genre": 5,
+  "method": "genres sorted; unseen artist first; ascending SHA256(UTF-8 seed:genre:track_id), then track_id",
+  "exclusions": [
+    "all Small IDs",
+    "unknown artist ID",
+    "missing title",
+    "missing/nonfinite official features",
+    "exact official feature duplicate of Small",
+    "repeated selected artist or exact feature vector"
+  ],
+  "small_count": 8000,
+  "small_with_valid_features": 8000,
+  "candidates_by_genre": {
+    "Electronic": 5307,
+    "Experimental": 1250,
+    "Folk": 517,
+    "Hip-Hop": 1198,
+    "Instrumental": 341,
+    "International": 18,
+    "Pop": 186,
+    "Rock": 6099
+  },
+  "tracks_sha256": "f73260fd112b8cd42bcd4f7c8918fc66b19d9d4c7b97f4faedce524b59e95d6b",
+  "features_sha256": "a035d04941e15fc3240aadd6880c519471d218329bbfe0e82c17553ba50e9e16",
+  "script_sha256": "8604ad8617191c97c4f25f76428eb92c280d29a9f2da0f1c864151d747c74950",
+  "source": "https://github.com/mdeff/fma#data",
+  "audio_archive": "fma_medium.zip",
+  "scope": "unseen tracks within FMA; unseen artists preferred; not a separate dataset",
+  "status": "selected; audio not downloaded or validated; no predictions produced",
+  "limitations": [
+    "feature equality is not audio fingerprinting",
+    "artist IDs do not identify every alias or collaboration",
+    "30-second archive excerpts need not reproduce full-track official features"
+  ],
+  "manifest_sha256": "7f597049563880c896a4968f3dd31e2da17222ae35944da06621d41c31e7a31a"
+}
