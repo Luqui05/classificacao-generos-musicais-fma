@@ -117,6 +117,20 @@ Baixe o ZIP deste repositório e extraia seu conteúdo, ou clone-o pelo Git. Exe
 
 Os comandos das próximas seções devem ser executados nessa pasta.
 
+O `.gitattributes` preserva LF nas duas fontes históricas em `src/fma_2017/`,
+inclusive com `core.autocrlf=true` no Windows. O extrator verifica seus bytes
+por SHA-256; não converta as quebras de linha desses arquivos. Em um clone antigo
+que apresente o erro `Fonte histórica diferente da versão fixada`, após atualizar
+o repositório, confira se não há edições próprias nesses arquivos e restaure-os:
+
+```powershell
+git diff -- src/fma_2017/constantq.py src/fma_2017/filters.py
+git restore --source=HEAD --worktree -- src/fma_2017/constantq.py src/fma_2017/filters.py
+```
+
+O comando `restore` descarta edições locais somente nesses dois arquivos;
+preserve eventuais alterações próprias antes de executá-lo.
+
 ## 2. Criar o ambiente e instalar as dependências
 
 ### Windows 11 — PowerShell
